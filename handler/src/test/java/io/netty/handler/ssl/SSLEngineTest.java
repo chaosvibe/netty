@@ -4418,7 +4418,7 @@ public abstract class SSLEngineTest {
 
     @MethodSource("newTestParams")
     @ParameterizedTest
-    public void testBufferUnderflowPacketSizeDependency(SSLEngineTestParam param) throws Exception {
+    public void testBufferUnderflowPacketSizeDependency(final SSLEngineTestParam param) throws Exception {
         SelfSignedCertificate ssc = new SelfSignedCertificate();
         clientSslCtx = wrapContext(param, SslContextBuilder.forClient()
                 .keyManager(ssc.certificate(), ssc.privateKey())
@@ -4435,19 +4435,16 @@ public abstract class SSLEngineTest {
                 .ciphers(param.ciphers())
                 .clientAuth(ClientAuth.REQUIRE)
                 .build());
-        SSLEngine clientEngine = null;
-        SSLEngine serverEngine = null;
-        try {
-            clientEngine = wrapEngine(clientSslCtx.newEngine(UnpooledByteBufAllocator.DEFAULT));
-            serverEngine = wrapEngine(serverSslCtx.newEngine(UnpooledByteBufAllocator.DEFAULT));
-
-            handshake(param.type(), param.delegate(), clientEngine, serverEngine);
-        } catch (SSLHandshakeException expected) {
-            // Expected
-        } finally {
-            cleanupClientSslEngine(clientEngine);
-            cleanupServerSslEngine(serverEngine);
-        }
+        final SSLEngine clientEngine = wrapEngine(clientSslCtx.newEngine(UnpooledByteBufAllocator.DEFAULT));
+        final SSLEngine serverEngine = wrapEngine(serverSslCtx.newEngine(UnpooledByteBufAllocator.DEFAULT));
+        assertThrows(SSLHandshakeException.class, new Executable() {
+            @Override
+            public void execute() throws Throwable {
+                handshake(param.type(), param.delegate(), clientEngine, serverEngine);
+            }
+        }) ;
+        cleanupClientSslEngine(clientEngine);
+        cleanupServerSslEngine(serverEngine);
     }
 
     @Test
