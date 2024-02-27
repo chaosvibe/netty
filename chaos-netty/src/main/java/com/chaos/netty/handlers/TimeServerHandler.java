@@ -19,7 +19,7 @@ public class TimeServerHandler extends DefaultThrowHandlerAdapter {
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         final ByteBuf time = ctx.alloc().buffer(4);
-        time.writeCharSequence(LocalDateTimeUtil.now().toString() + StrUtil.LF, StandardCharsets.US_ASCII);
+        time.writeInt((int) (System.currentTimeMillis() / 1000L + 2208988800L));
         final ChannelFuture f = ctx.writeAndFlush(time);
         f.addListener(new CloseChannelFutureListener(f, ctx));
     }
