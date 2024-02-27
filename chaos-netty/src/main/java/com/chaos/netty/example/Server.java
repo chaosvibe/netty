@@ -1,6 +1,6 @@
-package com.chaos.netty.discard;
+package com.chaos.netty.example;
 
-import com.chaos.netty.handlers.ChannelInitializerByName;
+import com.chaos.netty.handlers.server.ServerChannelInitializerByName;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -14,8 +14,8 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
  **/
 public class Server {
 
-    private int port;
-    private String handlerName;
+    private final int port;
+    private final String handlerName;
 
     public Server(int port, String handlerName) {
         this.port = port;
@@ -30,7 +30,7 @@ public class Server {
             b.group(bossGroup, workerGroup)
                     .channel(NioServerSocketChannel.class)
 //                    .handler(new LoggingHandler(LogLevel.INFO))
-                    .childHandler(new ChannelInitializerByName(handlerName))
+                    .childHandler(new ServerChannelInitializerByName(handlerName))
                     .option(ChannelOption.SO_BACKLOG, 128)
                     .childOption(ChannelOption.SO_KEEPALIVE, true);
 

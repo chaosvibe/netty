@@ -1,13 +1,11 @@
-package com.chaos.netty.handlers;
+package com.chaos.netty.handlers.server;
 
-import cn.hutool.core.date.LocalDateTimeUtil;
-import cn.hutool.core.util.StrUtil;
+import com.chaos.netty.handlers.DefaultThrowHandlerAdapter;
 import com.chaos.netty.listener.channel.CloseChannelFutureListener;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandlerContext;
 
-import java.nio.charset.StandardCharsets;
 
 /**
  * author: tangzw

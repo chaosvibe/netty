@@ -1,4 +1,4 @@
-package com.chaos.netty.handlers;
+package com.chaos.netty.handlers.client;
 
 import cn.hutool.core.util.StrUtil;
 import io.netty.channel.ChannelHandler;
@@ -10,11 +10,11 @@ import io.netty.channel.socket.SocketChannel;
  * date: 2024/2/23 17:01
  * description:
  **/
-public class ChannelInitializerByName extends ChannelInitializer<SocketChannel> {
+public class ClientChannelInitializerByName extends ChannelInitializer<SocketChannel> {
 
-    private String handlerName;
+    private final String handlerName;
 
-    public ChannelInitializerByName(String handlerName) {
+    public ClientChannelInitializerByName(String handlerName) {
         this.handlerName = handlerName;
     }
     @Override
@@ -22,6 +22,6 @@ public class ChannelInitializerByName extends ChannelInitializer<SocketChannel> 
         ch.pipeline().addLast(getHandlerByName());
     }
     private ChannelHandler getHandlerByName() throws InstantiationException, IllegalAccessException, ClassNotFoundException {
-        return (ChannelHandler) Class.forName(StrUtil.subBefore(this.getClass().getPackage().getName(), StrUtil.DOT, true) + StrUtil.format(".handlers.{}ServerHandler", handlerName)).newInstance();
+        return (ChannelHandler) Class.forName(StrUtil.subBefore(this.getClass().getPackage().getName(), StrUtil.DOT, true) + StrUtil.format(".client.{}ClientHandler", handlerName)).newInstance();
     }
 }

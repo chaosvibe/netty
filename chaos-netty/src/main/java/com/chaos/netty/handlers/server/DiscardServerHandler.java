@@ -1,5 +1,6 @@
-package com.chaos.netty.handlers;
+package com.chaos.netty.handlers.server;
 
+import com.chaos.netty.handlers.DefaultThrowHandlerAdapter;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.util.ReferenceCountUtil;
