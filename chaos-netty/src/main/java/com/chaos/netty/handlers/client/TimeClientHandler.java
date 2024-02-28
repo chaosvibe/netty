@@ -3,7 +3,6 @@ package com.chaos.netty.handlers.client;
 import com.chaos.netty.handlers.DefaultThrowHandlerAdapter;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelInboundHandlerAdapter;
 
 import java.util.Date;
 
