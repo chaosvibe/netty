@@ -6,7 +6,7 @@ import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import com.chaos.netty.handlers.client.ClientChannelInitializerByName;
+import com.chaos.netty.handlers.client.ClientChannelInboundInitializerByName;
 
 /**
  * author: tangzw
@@ -26,7 +26,7 @@ public class Handler {
             b.group(workerGroup);
             b.channel(NioSocketChannel.class);
             b.option(ChannelOption.SO_KEEPALIVE, true);
-            b.handler(new ClientChannelInitializerByName(handlerName));
+            b.handler(new ClientChannelInboundInitializerByName(handlerName));
 
             //Start the client
             ChannelFuture f = b.connect(host, port).sync();
