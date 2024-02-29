@@ -1,5 +1,6 @@
 package com.chaos.netty.decoder;
 
+import com.chaos.netty.entity.UnixTime;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
@@ -18,6 +19,6 @@ public class TimeDecoder extends ByteToMessageDecoder {
             return;
         }
 
-        out.add(in.readBytes(4));
+        out.add(new UnixTime(in.readUnsignedInt()));
     }
 }

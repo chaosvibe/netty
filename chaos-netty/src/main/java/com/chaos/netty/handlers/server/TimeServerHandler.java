@@ -1,9 +1,9 @@
 package com.chaos.netty.handlers.server;
 
+import com.chaos.netty.entity.UnixTime;
 import com.chaos.netty.handlers.DefaultThrowHandlerAdapter;
-import com.chaos.netty.listener.channel.CloseChannelFutureListener;
-import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 
 
@@ -16,9 +16,7 @@ public class TimeServerHandler extends DefaultThrowHandlerAdapter {
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        final ByteBuf time = ctx.alloc().buffer(4);
-        time.writeInt((int) (System.currentTimeMillis() / 1000L + 2208988800L));
-        final ChannelFuture f = ctx.writeAndFlush(time);
-        f.addListener(new CloseChannelFutureListener(f, ctx));
+        final ChannelFuture f = ctx.writeAndFlush(new UnixTime());
+        f.addListener(ChannelFutureListener.CLOSE);
     }
 }

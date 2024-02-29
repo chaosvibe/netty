@@ -1,8 +1,10 @@
 package com.chaos.netty.handlers;
 
+import com.chaos.netty.config.AfterEncoderConfigEnum;
 import com.chaos.netty.config.PreDecoderConfigEnum;
 import io.netty.channel.ChannelInboundHandler;
 import io.netty.channel.ChannelInitializer;
+import io.netty.channel.ChannelOutboundHandler;
 import io.netty.channel.socket.SocketChannel;
 
 import java.util.List;
@@ -24,9 +26,15 @@ public abstract class AbstractPreDecoderChannelInboundInitializer extends Channe
         return PreDecoderConfigEnum.getDecoders(handlerName);
     }
 
+    protected List<? extends ChannelOutboundHandler> getAfterEncoders() {
+        return AfterEncoderConfigEnum.getEncoders(handlerName);
+    }
+
     @Override
     protected void initChannel(SocketChannel ch) throws Exception {
         List<? extends ChannelInboundHandler> preDecoders = getPreDecoders();
         preDecoders.stream().filter(Objects::nonNull).forEach(ch.pipeline()::addLast);
+        List<? extends ChannelOutboundHandler> afterEncoders = getAfterEncoders();
+        afterEncoders.stream().filter(Objects::nonNull).forEach(ch.pipeline()::addLast);
     }
 }
