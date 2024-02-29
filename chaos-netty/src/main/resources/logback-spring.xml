@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration>
+    <springProperty scope="context" name="APP_NAME" source="spring.application.name"/>
+    <springProperty scope="context" name="LOG_FILE" source="logging.path" defaultValue="./log"/>
+    <property name="LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS}-%green([%X{trace_id}])-%magenta([%thread])-%-5level-%blue([%c])-%green([%L])-[%msg]%n" />
+
+
+    <!-- 1.控制台输出日志 ConsoleAppender -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <!-- encoder 默认配置为PatternLayoutEncoder -->
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>${LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+<!--     2.输出到文件 -->
+<!--        <appender name="rollingFile" class="ch.qos.logback.core.rolling.RollingFileAppender">-->
+<!--            <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">-->
+<!--                &lt;!&ndash;文件路径：可使用ognl&ndash;&gt;-->
+<!--                <fileNamePattern>${LOG_PATH}/info.%d{yyyy-MM-dd}.%i.log</fileNamePattern>-->
+<!--                &lt;!&ndash;每个文件最大100MB；保存60天；总文件最多20GB&ndash;&gt;-->
+<!--                <maxFileSize>100MB</maxFileSize>-->
+<!--                <maxHistory>60</maxHistory>-->
+<!--                <totalSizeCap>20GB</totalSizeCap>-->
+<!--            </rollingPolicy>-->
+<!--            <encoder>-->
+<!--                <charset>UTF-8</charset>-->
+<!--                <pattern>${LOG_PATTERN}</pattern>-->
+<!--            </encoder>-->
+<!--        </appender>-->
+
+
+    <!-- 配置属性 -->
+    <springProperty scope="context" name="JDBC_URL" source="spring.datasource.url"/>
+    <springProperty scope="context" name="USER_NAME" source="spring.datasource.username"/>
+    <springProperty scope="context" name="PASSWORD" source="spring.datasource.password"/>
+    <springProperty scope="context" name="DATA_SOURCE" source="logging.datasource.type"/>
+    <springProperty scope="context" name="DATA_DRIVER" source="spring.datasource.driver-class-name"/>
+
+    <!-- 写入到数据库 -->
+<!--    <appender name="DB" class="com.zixian.platform.utils.PlatformDBAppender">-->
+<!--        <connectionSource class="ch.qos.logback.core.db.DataSourceConnectionSource">-->
+<!--            <dataSource class="${DATA_SOURCE}">-->
+<!--                <driverClassName>${DATA_DRIVER}</driverClassName>-->
+<!--                <url>${JDBC_URL}</url>-->
+<!--                <username>${USER_NAME}</username> &lt;!&ndash; 数据库用户名 &ndash;&gt;-->
+<!--                <password>${PASSWORD}</password> &lt;!&ndash; 密码 &ndash;&gt;-->
+<!--            </dataSource>-->
+<!--        </connectionSource>-->
+<!--&lt;!&ndash;        <encoder>&ndash;&gt;-->
+<!--&lt;!&ndash;            <charset>UTF-8</charset>&ndash;&gt;-->
+<!--&lt;!&ndash;            <pattern>${LOG_PATTERN}</pattern>&ndash;&gt;-->
+<!--&lt;!&ndash;        </encoder>&ndash;&gt;-->
+<!--    </appender>-->
+
+
+    <!-- 线上环境，日志配置 -->
+    <springProfile name="prod">
+        <root level="ERROR">
+            <appender-ref ref="CONSOLE"/>
+            <appender-ref ref="DB"/>
+            日志输出到文件
+<!--            <appender-ref ref="rollingFile"/>-->
+        </root>
+    </springProfile>
+
+    <!-- 本地、开发环境，日志配置 可以写logback支持的所有节点 -->
+    <springProfile name="dev,test">
+        <root level="INFO">
+            <!--控制台日志:生产环境建议关掉-->
+            <appender-ref ref="CONSOLE"/>
+            <appender-ref ref="DB"/>
+            日志输出到文件
+<!--            <appender-ref ref="rollingFile"/>-->
+        </root>
+    </springProfile>
+</configuration>

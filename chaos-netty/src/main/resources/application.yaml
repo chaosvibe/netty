@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: chaos-netty
+  active:
+    profile: dev
